@@ -1,8 +1,4 @@
-# webhook
-A webhookd container WITH PYTHON RUNTIME
 
-## compose
-```yaml
 services:
   webhook:
     container_name: webhook
@@ -15,4 +11,3 @@ services:
     - WHD_HOOK_SCRIPTS=/scripts
     volumes:
     - /srv/hook:/scripts
-```
