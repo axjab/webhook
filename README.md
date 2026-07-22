@@ -1,5 +1,5 @@
 # webhook
-A webhookd container WITH PYTHON RUNTIME
+A webhookd container WITH PYTHON RUNTIME AND NATS COMPATIBILITY
 
 ## compose
 ```yaml
