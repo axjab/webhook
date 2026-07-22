@@ -4,15 +4,21 @@ A webhookd container WITH PYTHON RUNTIME
 ## compose
 ```yaml
 services:
-  webhook:
-    container_name: webhook
-    hostname: webhook
-    image: ghcr.io/axjab/webhook:latest
-    restart: always
+  webhookd:
+    container_name: webhookd
+    image: ghcr.io/axjab/webhookd:latest
+    restart: unless-stopped
     ports:
-    - "127.0.0.1:8080:8080"
+    - "8080:8080"
     environment:
-    - WHD_HOOK_SCRIPTS=/scripts
+      WHD_HOOK_SCRIPTS: /scripts
+      NATS_URL: ${NATS_URL}
     volumes:
-    - /srv/hook:/scripts
+    - /srv/hook:/scripts:ro
+    networks:
+      - nats
+
+networks:
+  nats:
+    external: true
 ```
