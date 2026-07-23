@@ -1,0 +1,22 @@
+
+services:
+  webhookd:
+    container_name: webhookd
+    image: ghcr.io/axjab/webhookd:1.22.0
+    restart: unless-stopped
+    # ports:
+    # - "8080:8080"  # CONNECT webhookd:8080
+    environment:
+      WHD_HOOK_SCRIPTS: /scripts
+      WHD_HOOK_DEFAULT_EXT: py
+      WHD_NOTIFICATION_URI: "${NTFY_URL}?auth=${NTFY_TOKEN_64}"
+      NATS_URL: ${NATS_URI}
+    volumes:
+        - /srv/hook:/scripts:ro
+        - /srv/log/hook:/var/log/hook
+    networks:
+      - nats
+
+networks:
+  nats:
+    external: true

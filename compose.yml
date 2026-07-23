@@ -1,22 +1,23 @@
-
 services:
-  webhookd:
-    container_name: webhookd
-    image: ghcr.io/axjab/webhookd:1.22.0
+  webhookd-kai:
+    container_name: webhookd-kai
+    image: ghcr.io/axjab/webhookd-kai:1.22.0
     restart: unless-stopped
-    # ports:
-    # - "8080:8080"  # CONNECT webhookd:8080
+    ports:
+        - "${HOST_IP}:${HOST_PORT}:8080"
     environment:
-      WHD_HOOK_SCRIPTS: /scripts
-      WHD_HOOK_DEFAULT_EXT: py
-      WHD_NOTIFICATION_URI: "${NTFY_URL}?auth=${NTFY_TOKEN_64}"
-      NATS_URL: ${NATS_URI}
+        WHD_HOOK_SCRIPTS: /scripts
+        WHD_HOOK_DEFAULT_EXT: py
+        WHD_NOTIFICATION_URI: "${NTFY_URL}/${NTFY_TOPIC}?auth=${NTFY_TOKEN_64}"
+        NATS_URL: "nats://nats:4222"
     volumes:
-        - /srv/hook:/scripts:ro
+        - /srv/hook:/scripts
         - /srv/log/hook:/var/log/hook
+        # - /srv/log:/log
+        - /tmp:/tmp
     networks:
-      - nats
+        - nats
 
 networks:
-  nats:
-    external: true
+    nats:
+        external: true
